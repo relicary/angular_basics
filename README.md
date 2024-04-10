@@ -196,3 +196,5 @@ Y, finalmente, en el HTML que lo necesita usar
 <hr>
 <app-counter></app-counter>
 ```
+
+**NOTA:** Otra recomendación importante es que el desarrollador debe de intentar que los componentes sean lo más pequeños posible, separándolos por funcionalidad.
