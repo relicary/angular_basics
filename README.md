@@ -135,3 +135,27 @@ Las properties de la clase `AppComponent` pueden accederse desde el HTML
 <hr>
 <h3>Counter: {{ counter }}</h3>
 ```
+
+## Añadir funciones al HTML
+
+En este caso, las funciones también se crean dentro del componente:
+
+```typescript
+export class AppComponent {
+
+  public title: string = 'My first Angular app';
+  public counter: number = 10;
+
+  increaseBy (value : number) : void {
+    this.counter += value;
+  }
+}
+```
+
+Y desde el HTML se llama usando un evento del elemento HTML e indicando la función del componente que se va a llamar.
+
+```html
+<button (click)="increaseBy(1)">+1</button>
+```
+
+**NOTA:** Cuando en un tag html se usan los paréntesis `()` se está apuntando a un evento o función.
