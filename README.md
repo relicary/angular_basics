@@ -159,3 +159,40 @@ Y desde el HTML se llama usando un evento del elemento HTML e indicando la funci
 ```
 
 **NOTA:** Cuando en un tag html se usan los paréntesis `()` se está apuntando a un evento o función.
+
+## Crear un nuevo componente
+
+En primer lugar, se crea el directorio del nuevo componente en `app` y dentro, el elemento básico más importante: **el fichero del componente ```counter.component.ts```**
+
+
+Donde se indica el nombre de la clase (`CounterComponent`), con qué tag HTML se va a identificar `selector: 'app-counter'` y el HTML que va a insertar cuando se llame a dicho tag `template: '<h1>Hola Counter</h1>'`
+
+```typescript
+import { Component } from "@angular/core";
+
+@Component({
+  selector: 'app-counter',
+  template: '<h1>Hola Counter</h1>'
+})
+export class CounterComponent {
+
+}
+```
+Seguidamente, hay que añadirlo en el fichero `app.module.ts`
+
+```typescript
+@NgModule({
+  declarations: [
+    AppComponent,
+    CounterComponent
+  ],
+  /*...*/
+})
+```
+
+Y, finalmente, en el HTML que lo necesita usar
+
+```html
+<hr>
+<app-counter></app-counter>
+```
