@@ -104,3 +104,34 @@ El más importante es el directorio `src`:
   * ```component.spec.ts```
   * ```app.component.ts``` El fichero más importante, el principal
   * ```modules.ts```
+
+## Components
+
+El componente, si se observa atentamente, es una clase TS:
+
+```typescript
+export class AppComponent {
+  public title: string = 'My first Angular app';
+  public counter: number = 10;
+}
+```
+
+Y sobre él, es añadido un **decorator** que indica con qué HTML se relaciona y el CSS de donde debe de recoger sus estilos.
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css'
+})
+```
+
+Las properties de la clase `AppComponent` pueden accederse desde el HTML
+
+```html
+<h1>{{ title }}</h1>
+<hr>
+<h3>Counter: {{ counter }}</h3>
+```
