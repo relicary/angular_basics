@@ -217,3 +217,20 @@ UPDATE src/app/app.module.ts (582 bytes)
 
 Creando el HTML, el TS, los estilos, el fichero de testing y añadido al módulo de la aplicación.
 
+## One Way Data Binding
+
+En las app's de Angular hay que tratar de priorizar esta vía y la cual evita *infinite loops*
+
+Los métodos precedidos de la palabra reservada `get` actúan como propiedades también dentro de una clase:
+
+```typescript
+get capitalizedName(): string {
+    return this.name.toUpperCase();
+}
+```
+```html
+<dl>
+  <td>Capitalized:</td>
+  <dd> {{ capitalizedName }} </dd>
+</dl>
+```
