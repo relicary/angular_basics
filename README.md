@@ -234,3 +234,19 @@ get capitalizedName(): string {
   <dd> {{ capitalizedName }} </dd>
 </dl>
 ```
+
+## Llamada a métodos
+
+Los métodos declarados en un componente se invocan desde el HTML usando el nombre del mismo más los parétesis `()`
+
+```typescript
+getHeroDescription(): string {
+    return `${ this.name } - ${ this.age }`;
+}
+```
+```html
+<dl>
+  <td>Method:</td>
+  <dd> {{ getHeroDescription() }} </dd>
+</dl>
+```
