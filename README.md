@@ -250,3 +250,11 @@ getHeroDescription(): string {
   <dd> {{ getHeroDescription() }} </dd>
 </dl>
 ```
+
+Los métodos también se pueden asociar a eventos de los elementos HTML
+
+```typescript
+changeHero(): void {
+  this.name = 'Spiderman';
+}
+```
