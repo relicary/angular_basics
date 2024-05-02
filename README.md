@@ -282,3 +282,21 @@ export class HeroComponent {
   Change name
 </button>
 ```
+
+## ngFor
+
+La directiva ```*ngfor ``` recorre un array declarado en el `Component` y permite manejar sus valores.
+
+
+```typescript
+export class ListComponent {
+  public heroNames: string[] = ['Spiderman', 'Ironman', 'Hulk', 'She Hulk', 'Thor'];
+}
+```
+```html
+<ul class="mt-2 list-group">
+  <li
+    *ngFor="let name of heroNames"
+    class="list-group-item">{{ name }}</li>
+</ul>
+```
