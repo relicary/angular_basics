@@ -104,3 +104,223 @@ El más importante es el directorio `src`:
   * ```component.spec.ts```
   * ```app.component.ts``` El fichero más importante, el principal
   * ```modules.ts```
+
+## Components
+
+El componente, si se observa atentamente, es una clase TS:
+
+```typescript
+export class AppComponent {
+  public title: string = 'My first Angular app';
+  public counter: number = 10;
+}
+```
+
+Y sobre él, es añadido un **decorator** que indica con qué HTML se relaciona y el CSS de donde debe de recoger sus estilos.
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css'
+})
+```
+
+Las properties de la clase `AppComponent` pueden accederse desde el HTML
+
+```html
+<h1>{{ title }}</h1>
+<hr>
+<h3>Counter: {{ counter }}</h3>
+```
+
+## Añadir funciones al HTML
+
+En este caso, las funciones también se crean dentro del componente:
+
+```typescript
+export class AppComponent {
+
+  public title: string = 'My first Angular app';
+  public counter: number = 10;
+
+  increaseBy (value : number) : void {
+    this.counter += value;
+  }
+}
+```
+
+Y desde el HTML se llama usando un evento del elemento HTML e indicando la función del componente que se va a llamar.
+
+```html
+<button (click)="increaseBy(1)">+1</button>
+```
+
+**NOTA:** Cuando en un tag html se usan los paréntesis `()` se está apuntando a un evento o función.
+
+## Crear un nuevo componente
+
+En primer lugar, se crea el directorio del nuevo componente en `app` y dentro, el elemento básico más importante: **el fichero del componente ```counter.component.ts```**
+
+
+Donde se indica el nombre de la clase (`CounterComponent`), con qué tag HTML se va a identificar `selector: 'app-counter'` y el HTML que va a insertar cuando se llame a dicho tag `template: '<h1>Hola Counter</h1>'`
+
+```typescript
+import { Component } from "@angular/core";
+
+@Component({
+  selector: 'app-counter',
+  template: '<h1>Hola Counter</h1>'
+})
+export class CounterComponent {
+
+}
+```
+Seguidamente, hay que añadirlo en el fichero `app.module.ts`
+
+```typescript
+@NgModule({
+  declarations: [
+    AppComponent,
+    CounterComponent
+  ],
+  /*...*/
+})
+```
+
+Y, finalmente, en el HTML que lo necesita usar
+
+```html
+<hr>
+<app-counter></app-counter>
+```
+
+**NOTA:** Otra recomendación importante es que el desarrollador debe de intentar que los componentes sean lo más pequeños posible, separándolos por funcionalidad.
+
+
+## Crear un componente con Angular CLI
+
+También se puede usar el **Angular CLI** para crear un componente con todo lo necesario.
+
+Desde la raíz del proyecto se ejecuta el comando:
+
+```console
+$> ng generate component heroes/hero
+CREATE src/app/heroes/hero/hero.component.html (20 bytes)
+CREATE src/app/heroes/hero/hero.component.spec.ts (610 bytes)
+CREATE src/app/heroes/hero/hero.component.ts (201 bytes)
+CREATE src/app/heroes/hero/hero.component.css (0 bytes)
+UPDATE src/app/app.module.ts (582 bytes)
+```
+
+Creando el HTML, el TS, los estilos, el fichero de testing y añadido al módulo de la aplicación.
+
+## One Way Data Binding
+
+En las app's de Angular hay que tratar de priorizar esta vía y la cual evita *infinite loops*
+
+Los métodos precedidos de la palabra reservada `get` actúan como propiedades también dentro de una clase:
+
+```typescript
+get capitalizedName(): string {
+    return this.name.toUpperCase();
+}
+```
+```html
+<dl>
+  <td>Capitalized:</td>
+  <dd> {{ capitalizedName }} </dd>
+</dl>
+```
+
+## Llamada a métodos
+
+Los métodos declarados en un componente se invocan desde el HTML usando el nombre del mismo más los parétesis `()`
+
+```typescript
+getHeroDescription(): string {
+    return `${ this.name } - ${ this.age }`;
+}
+```
+```html
+<dl>
+  <td>Method:</td>
+  <dd> {{ getHeroDescription() }} </dd>
+</dl>
+```
+
+Los métodos también se pueden asociar a eventos de los elementos HTML
+
+```typescript
+changeHero(): void {
+  this.name = 'Spiderman';
+}
+```
+
+```html
+<button class="btn btn-primary mx-2" (click)="changeHero()">
+  Change name
+</button>
+```
+
+## ngIf
+
+La directiva ```*ngif ``` borra o añade un elemento en el DOM basándose en la expresión JS que contenga, que se resuelve como un booleano.
+
+```typescript
+export class HeroComponent {
+  public name : string = 'ironman';
+}
+```
+```html
+<button
+  *ngIf="name !== 'Spiderman'"
+  (click)="changeHero()"
+  class="btn btn-primary mx-2">
+  Change name
+</button>
+```
+
+## ngFor
+
+La directiva `*ngfor` recorre un array declarado en el `Component` y permite manejar sus valores.
+
+
+```typescript
+export class ListComponent {
+  public heroNames: string[] = ['Spiderman', 'Ironman', 'Hulk', 'She Hulk', 'Thor'];
+}
+```
+```html
+<ul class="mt-2 list-group">
+  <li
+    *ngFor="let name of heroNames"
+    class="list-group-item">{{ name }}</li>
+</ul>
+```
+
+## ngIf-else
+
+La directiva `*ngif-else` permite enlazar dos elementos mediante una **referencia local** dentro de la página usando el símbolo `#`
+
+```html
+<div *ngIf="deletedHero; else nothingWasDeleted">
+  <h3>Deleted hero <small class="text-danger">{{ deletedHero }}</small></h3>
+</div>
+<ng-template #nothingWasDeleted>
+  <h3>No hero has been deleted</h3>
+</ng-template>
+```
+
+El tag `ng-template` crea un elemento parecido a `div` que no se renderiza. Solamente espera una condición para dibujarse.
+
+```html
+<ng-template #nothingWasDeleted>
+  <h3>No hero has been deleted</h3>
+</ng-template>
+```
+```html
+<h3>No hero has been deleted</h3>
+```
