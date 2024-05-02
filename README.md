@@ -258,3 +258,27 @@ changeHero(): void {
   this.name = 'Spiderman';
 }
 ```
+
+```html
+<button class="btn btn-primary mx-2" (click)="changeHero()">
+  Change name
+</button>
+```
+
+## ngIf
+
+La directiva ```*ngif ``` borra o añade un elemento en el DOM basándose en la expresión JS que contenga, que se resuelve como un booleano.
+
+```typescript
+export class HeroComponent {
+  public name : string = 'ironman';
+}
+```
+```html
+<button
+  *ngIf="name !== 'Spiderman'"
+  (click)="changeHero()"
+  class="btn btn-primary mx-2">
+  Change name
+</button>
+```
