@@ -198,3 +198,22 @@ Y, finalmente, en el HTML que lo necesita usar
 ```
 
 **NOTA:** Otra recomendación importante es que el desarrollador debe de intentar que los componentes sean lo más pequeños posible, separándolos por funcionalidad.
+
+
+## Crear un componente con Angular CLI
+
+También se puede usar el **Angular CLI** para crear un componente con todo lo necesario.
+
+Desde la raíz del proyecto se ejecuta el comando:
+
+```console
+$> ng generate component heroes/hero
+CREATE src/app/heroes/hero/hero.component.html (20 bytes)
+CREATE src/app/heroes/hero/hero.component.spec.ts (610 bytes)
+CREATE src/app/heroes/hero/hero.component.ts (201 bytes)
+CREATE src/app/heroes/hero/hero.component.css (0 bytes)
+UPDATE src/app/app.module.ts (582 bytes)
+```
+
+Creando el HTML, el TS, los estilos, el fichero de testing y añadido al módulo de la aplicación.
+
