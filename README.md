@@ -285,7 +285,7 @@ export class HeroComponent {
 
 ## ngFor
 
-La directiva ```*ngfor ``` recorre un array declarado en el `Component` y permite manejar sus valores.
+La directiva `*ngfor` recorre un array declarado en el `Component` y permite manejar sus valores.
 
 
 ```typescript
@@ -299,4 +299,28 @@ export class ListComponent {
     *ngFor="let name of heroNames"
     class="list-group-item">{{ name }}</li>
 </ul>
+```
+
+## ngIf-else
+
+La directiva `*ngif-else` permite enlazar dos elementos mediante una **referencia local** dentro de la página usando el símbolo `#`
+
+```html
+<div *ngIf="deletedHero; else nothingWasDeleted">
+  <h3>Deleted hero <small class="text-danger">{{ deletedHero }}</small></h3>
+</div>
+<ng-template #nothingWasDeleted>
+  <h3>No hero has been deleted</h3>
+</ng-template>
+```
+
+El tag `ng-template` crea un elemento parecido a `div` que no se renderiza. Solamente espera una condición para dibujarse.
+
+```html
+<ng-template #nothingWasDeleted>
+  <h3>No hero has been deleted</h3>
+</ng-template>
+```
+```html
+<h3>No hero has been deleted</h3>
 ```
