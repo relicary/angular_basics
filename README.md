@@ -324,3 +324,51 @@ El tag `ng-template` crea un elemento parecido a `div` que no se renderiza. Sola
 ```html
 <h3>No hero has been deleted</h3>
 ```
+# Módulos
+
+Un **módulo** es el agrupador de una funcionalidad.
+
+> **NOTA:** Los módulos están en desuso a partir de Angular 17.
+
+¿Cómo pueden crearse?
+
+Dentro del directorio `app`, se crea otro llamado `counter` y anidado al mismo, el directorio `components` donde se almacenarán todos los componentes.
+
+```
+├── app
+│   ├── counter
+|   |   ├── components
+|   |   |   ├── counter
+|   |   |   |   ├── counter.component.ts
+|   |   |   ├── counter.module.ts
+```
+
+En el fichero `counter.module.ts` se indican qué componentes pertenecen al módulo y cuáles pueden exportarse.
+
+```typescript
+import { NgModule } from "@angular/core";
+import { CounterComponent } from "./components/counter/counter.component";
+
+@NgModule({
+  declarations: [
+    CounterComponent
+  ],
+  exports: [
+    CounterComponent
+  ]
+})
+export class CounterModule {
+}
+```
+
+De este modo, el nuevo módulo puede declararse en el ```app.module.ts``` dentro del tag ```import```
+
+
+```typescript
+@NgModule({
+  imports: [
+    CounterModule
+  ]
+})
+export class AppModule { }
+```
