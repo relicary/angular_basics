@@ -418,3 +418,7 @@ Entonces, para cada una de esas partes, se genera un componente:
 
 * list
 * add-character
+
+## Comunicación entre componentes
+
+Cualquier componente de una `page` puede necesitar comunicarse con otro. Para lograrlo hay que hacer uso del decotador `@ngInput`
