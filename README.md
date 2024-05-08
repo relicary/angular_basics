@@ -330,7 +330,7 @@ Un **módulo** es el agrupador de una funcionalidad.
 
 > **NOTA:** Los módulos están en desuso a partir de Angular 17.
 
-¿Cómo pueden crearse?
+**¿Cómo pueden crearse manualmentes?**
 
 Dentro del directorio `app`, se crea otro llamado `counter` y anidado al mismo, el directorio `components` donde se almacenarán todos los componentes.
 
@@ -361,7 +361,7 @@ export class CounterModule {
 }
 ```
 
-De este modo, el nuevo módulo puede declararse en el ```app.module.ts``` dentro del tag ```import```
+De este modo, el nuevo módulo puede declararse en el `app.module.ts` dentro del tag `import`
 
 
 ```typescript
@@ -372,3 +372,26 @@ De este modo, el nuevo módulo puede declararse en el ```app.module.ts``` dentro
 })
 export class AppModule { }
 ```
+
+**¿Y cómo se crea un módulo de forma automática?** Desde el directorio que contiene `src`
+
+```bash
+$> ng generate module dbz
+CREATE src/app/dbz/dbz.module.ts (201 bytes)
+```
+O
+```bash
+$> ng g m dbz
+CREATE src/app/dbz/dbz.module.ts (201 bytes)
+```
+
+## Módulo DBZ
+
+Se compone de un fichero `dbz-module.ts` y cuatro directorios:
+
+* `pages`
+* `components`
+* `interfaces`
+* `services`
+
+Lo primero, crear un componente en el que pueda agrupar todos los demás componentes. Eso es una **page**: un componente común y corriente que contiene a otros.
