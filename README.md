@@ -419,6 +419,34 @@ Entonces, para cada una de esas partes, se genera un componente:
 * list
 * add-character
 
-## Comunicación entre componentes
+## Decoradores: Comunicación entre componentes
 
-Cualquier componente de una `page` puede necesitar comunicarse con otro. Para lograrlo hay que hacer uso del decotador `@ngInput`
+Cualquier componente de una `page` puede necesitar comunicarse con otro. Para lograrlo hay que hacer uso del decorador `@Input`
+
+```typescript
+@Component({
+  selector: 'dbz-list',
+  templateUrl: './list.component.html'
+})
+export class ListComponent {
+  @Input()
+  public characterList: Character[] = [{
+    name: 'Trunks',
+    power: 10
+  }];
+}
+```
+
+¿Qué aporta este decorador?
+
+1. El selector `dbz-list` puede recibir una property llamada `[characterList]`.
+2. Y se le puede asignar un valor que se localiza en el componente que lo llama.
+
+
+```html
+  <dbz-list [characterList]="characters"></dbz-list>
+```
+
+Donde `characters` es un campo declarado dentro del componente `app-dbz-main-page` y se asigna al componente `dbz-list`.
+
+En otras palabras, el componente Main Page ha transmitido un valor al componente `list`
