@@ -395,3 +395,26 @@ Se compone de un fichero `dbz-module.ts` y cuatro directorios:
 * `services`
 
 Lo primero, crear un componente en el que pueda agrupar todos los demás componentes. Eso es una **page**: un componente común y corriente que contiene a otros.
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-dbz-main-page',
+  templateUrl: './main-page.component.html'
+})
+
+export class MainPageComponent {
+
+}
+```
+
+¿De qué se va a componer la pantalla? Lo mejor es pensar en reducir todo a módulos pequeños. Por ejemplo:
+
+* Un listado de personajes
+* Un formulario para añadir personajes
+
+Entonces, para cada una de esas partes, se genera un componente:
+
+* list
+* add-character
