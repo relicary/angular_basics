@@ -683,3 +683,157 @@ export class MainPageComponent {
   }
 }
 ```
+
+## Servicios privados
+
+Hay una buena práctica que invita a que los servicios sean siempre privados en lugar de públicos.
+
+```typescript
+@Component({
+  selector: 'app-dbz-main-page',
+  templateUrl: './main-page.component.html',
+})
+export class MainPageComponent {
+
+  constructor( private dbzService: DbzService ){
+
+  }
+}
+```
+
+Así pues, ¿cómo acceder a los métodos del servicio? Creando métodos dentro del componente como por ejemplo un `get`
+
+```typescript
+export class MainPageComponent {
+  
+  get characters(): Character[] {
+    return [...this.dbzService.characters];
+  }
+}
+```
+
+Y de esa forma, se pueden llamar a los métodos directamente desde el HMTL
+
+```html
+<div class="col">
+  <dbz-list [characterList]="characters"></dbz-list>
+</div>
+```
+
+# UUID: Identificadores únicos
+
+Es un paquete muy popular para la asignación de ID's a los datos que se manejan en la aplicación. Algo similar a los identificadores de *rows* en base de datos.
+
+```
+$> npm i uuid
+```
+
+Aparte de añadirlo al proyecto, se añade a las dependencias de desarrollo.
+
+```console
+$> npm i --save-dev @types/uuid
+```
+
+Por último, se declara esta librería en aquellos ficheros donde se vaya a usar.
+
+```typescript
+import { v4 } from "uuid";
+```
+
+Donde v4 es una función que genera ID's.
+
+En primer lugar, hay que indicarle a la interfaz character que tiene un nuevo campo:
+
+```typescript
+export interface Character {
+  id?: string;
+  name: string;
+  power: number;
+}
+```
+
+Tras esto, hay que completar el servicio que es donde (por ahora) se están declarando los datos
+
+```typescript
+export class DbzService {
+  public characters: Character[] = [
+    {
+      id: uuid(),
+      name: 'Krillin',
+      power: 1000,
+    },
+    {
+      id: uuid(),
+      name: 'Goku',
+      power: 9500,
+    },
+    {
+      id: uuid(),
+      name: 'Vegeta',
+      power: 7500,
+    },
+  ];
+```
+
+# Despliegues en Producción
+
+El objetivo es "sacudir" la aplicación para que ocupe lo menos posible y podamos usarlo en un servidor de Producción. Básicamente lo reducimos a un conjunto de ficheros:
+
+* `HTML`
+* `CSS`
+* `JS`
+
+Hay que tener en cuenta el concepto de **Assets**. Son los elementos que nunca van a cambiar, como las imágenes o los `CSS`. Son los recursos estáticos que no cambian de nombre.
+
+Cuando se lanza un `ng serve` se puede observar ver una tabla en consola que muestra el tamaño total. Y es demasiado grande para una web. Démonos cuenta de que estamos hablando de sólo texto.
+
+En el directorio donde reside `package.json`, si se ejecuta este `build`, la aplicación se optimiza tremendamente.
+
+```bash
+$> ng build
+\ Building...
+Initial chunk files   | Names         |  Raw size | Estimated transfer size
+main-EQLKLX5B.js      | main          | 238.57 kB |                62.12 kB
+polyfills-RT5I6R6G.js | polyfills     |  33.10 kB |                10.72 kB
+styles-5INURTSO.css   | styles        |   0 bytes |                 0 bytes
+
+                      | Initial total | 271.68 kB |                72.84 kB
+Output location: C:\wsRelicary\angular_herrera\bases\dist\bases
+
+Application bundle generation complete. [15.835 seconds]
+```
+
+Y esos `72.84 kB` serán los que se suban al servidor de producción.
+
+Cada fichero, es renombrado con un código HASH. Este hash solamente se modifica al hacer `build` sobre ficheros modificados. De este modo la caché se optimiza.
+
+Todo esto se almacena en un nuevo directorio llamado `dist`
+
+## HttpServer
+
+El `HttpServer` es un paquete npm que se puede instalar
+
+```bash
+$> npm install --global http-server
+```
+
+Una vez instalado, nos movemos al directorio `dist` y dentro del mismo al direcorio del proyecto. Ahí podemos lanzar
+
+```bash
+# Opcional
+$> cd dist/bases/browser
+# Ejecutar
+$> http-server -o
+```
+
+Así pues, esto nos despliega un servidor local de pruebas bastante útil.
+
+## GitHub Pages
+
+Se puede desplegar desde `Settings -> Pages`:
+
+1. Copiar el directorio `dist/bases` en la raíz del proyecto
+2. Renombrarlo como `docs`
+3. Subir los cambios
+4. Configurar la action para que se lance usando el directorio `docs`
+5. Cuando finalice la *action*, se dispondrá de una URL
