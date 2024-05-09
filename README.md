@@ -614,5 +614,13 @@ export class MainPageComponent {
 <dbz-add-character (onNewCharacter)="onNewCharacter($event)"></dbz-add-character>
 ```
 
+7. ¿Y cómo mandarlo desde `MainPageComponent` a `ListComponent`? En el propio componente se implementa el alamacenado (una lista en este caso)
+```typescript
+export class MainPageComponent {
+  onNewCharacter(character: Character): void  {
+    this.characters.push(character);
+  }
+}
+```
 
 > **Nota:** en los HTML, los `()` paréntesis definen un evento/método y los `[]` corchetes campos del componente.
