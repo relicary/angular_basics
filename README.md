@@ -684,9 +684,7 @@ export class MainPageComponent {
 }
 ```
 
-# Despliegues
-
-## UUID
+# UUID: Identificadores únicos
 
 Es un paquete muy popular para la asignación de ID's a los datos que se manejan en la aplicación. Algo similar a los identificadores de *rows* en base de datos.
 
@@ -718,7 +716,7 @@ export interface Character {
 }
 ```
 
-Tras esto, hay que completar el servicio que es donde (por ahroa) se están declarando los datos
+Tras esto, hay que completar el servicio que es donde (por ahora) se están declarando los datos
 
 ```typescript
 export class DbzService {
@@ -743,8 +741,4 @@ export class DbzService {
 Tras estos pasos, se modificarán todos los métodos que deseemos que usen el ID
 
 
-```typescript
-```
-```typescript
-```
 
