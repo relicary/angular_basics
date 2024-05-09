@@ -834,6 +834,26 @@ Se puede desplegar desde `Settings -> Pages`:
 
 1. Copiar el directorio `dist/bases` en la raíz del proyecto
 2. Renombrarlo como `docs`
-3. Subir los cambios
-4. Configurar la action para que se lance usando el directorio `docs`
-5. Cuando finalice la *action*, se dispondrá de una URL
+3. El contenido de `browser` se mueve a `docs` también
+4. En el `index.html` dentro de `docs`, renombrar la línea siguiente con `./`
+```html
+<base href="./">
+```
+5. Subir los cambios
+6. Configurar la action para que se lance usando el directorio `docs`
+7. Cuando finalice la *action*, se dispondrá de una URL pública
+
+### Automatizar GitHub Pages
+
+Para conseguir que los scripts del `package.json` ejecuten automáticamente todos los pasos anteriores, realizamos lo siguiente:
+
+1. `npm install del-cli --save-dev`
+2. `npm install copyfiles --save-dev`
+3. Se crean los siguientes scripts en `package.json`
+    * `"build:href": "ng build --base-href ./"`
+    * `"delete:docs": "del docs"`
+    * `"copy:dist": "copyfiles ./dist/bases/browser/* ./docs -f"`
+    * `"copy:license": "copyfiles ./dist/bases/*.txt ./docs -f"`
+    * `"build:github": "npm run delete:docs && npm run build:href && npm run copy:dist && npm run copy:license"`
+
+Con estos comando, si se ejecuta `npm run build:github`, se crearán el directorio `docs` correctamente y listo para subir al repositorio.
