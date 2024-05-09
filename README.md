@@ -624,3 +624,62 @@ export class MainPageComponent {
 ```
 
 > **Nota:** en los HTML, los `()` paréntesis definen un evento/método y los `[]` corchetes campos del componente.
+
+# Services
+
+Los **Servicios** son los elementos en los que se trabaja con los datos.
+
+Su **scope es Singleton:** One Instance Existing
+
+Con el decorador `@Injectable` se indica que se está trabajando en un servicio.
+
+```typescript
+@Injectable({
+  providedIn: 'root',
+})
+export class DbzService {
+
+}
+```
+
+Y dentro de ese componente se definen tanto las fuentes de datos como los métodos que permiten trabajar sobre ellos.
+
+```typescript
+@Injectable({
+  providedIn: 'root',
+})
+export class DbzService {
+  public characters: Character[] = [
+    {
+      name: 'Krillin',
+      power: 1000,
+    },
+    {
+      name: 'Goku',
+      power: 9500,
+    },
+    {
+      name: 'Vegeta',
+      power: 7500,
+    },
+  ];
+
+  onNewCharacter(character: Character): void {
+    this.characters.push(character);
+  }
+
+  onDeleteCharacter(id: number): void {
+    this.characters.splice(id, 1);
+  }
+}
+```
+
+Dentro del componente se define un `constructor` que instancia al servicio. De ese modo, todo vuelve a quedar linkado.
+
+```typescript
+export class MainPageComponent {
+
+  constructor( public dbzService: DbzService ){
+  }
+}
+```
