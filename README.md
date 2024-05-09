@@ -684,6 +684,42 @@ export class MainPageComponent {
 }
 ```
 
+## Servicios privados
+
+Hay una buena práctica que invita a que los servicios sean siempre privados en lugar de públicos.
+
+```typescript
+@Component({
+  selector: 'app-dbz-main-page',
+  templateUrl: './main-page.component.html',
+})
+export class MainPageComponent {
+
+  constructor( private dbzService: DbzService ){
+
+  }
+}
+```
+
+Así pues, ¿cómo acceder a los métodos del servicio? Creando métodos dentro del componente como por ejemplo un `get`
+
+```typescript
+export class MainPageComponent {
+  
+  get characters(): Character[] {
+    return [...this.dbzService.characters];
+  }
+}
+```
+
+Y de esa forma, se pueden llamar a los métodos directamente desde el HMTL
+
+```html
+<div class="col">
+  <dbz-list [characterList]="characters"></dbz-list>
+</div>
+```
+
 # UUID: Identificadores únicos
 
 Es un paquete muy popular para la asignación de ID's a los datos que se manejan en la aplicación. Algo similar a los identificadores de *rows* en base de datos.
@@ -738,7 +774,8 @@ export class DbzService {
     },
   ];
 ```
-Tras estos pasos, se modificarán todos los métodos que deseemos que usen el ID
+
+
 
 
 
