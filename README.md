@@ -688,17 +688,19 @@ export class MainPageComponent {
 
 ## UUID
 
-Es un paquete muy popular para la asignación de ID's a elementos.
+Es un paquete muy popular para la asignación de ID's a los datos que se manejan en la aplicación. Algo similar a los identificadores de *rows* en base de datos.
 
 ```
-$> > npm i uuid
+$> npm i uuid
 ```
 
-Añadimos una dependencia de desarrollos
+Aparte de añadirlo al proyecto, se añade a las dependencias de desarrollo.
 
+```console
 $> npm i --save-dev @types/uuid
+```
 
-Y que se declara en los ficheros en que se vaya a usar 
+Por último, se declara esta librería en aquellos ficheros donde se vaya a usar.
 
 ```typescript
 import { v4 } from "uuid";
