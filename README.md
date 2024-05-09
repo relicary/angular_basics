@@ -450,3 +450,23 @@ export class ListComponent {
 Donde `characters` es un campo declarado dentro del componente `app-dbz-main-page` y se asigna al componente `dbz-list`.
 
 En otras palabras, el componente Main Page ha transmitido un valor al componente `list`
+
+## Más sobre ngFor
+
+`ngFor` nos da un conjunto de variables con las que podemos controlar nuestro bucle:
+* En qué **índice** se está: `index`
+* Cuál es el primer elemento: `first`
+* Cuál es el último: `last`
+* Si el índice es par (`even`) o impar (`odd`)
+
+```html
+<li *ngFor="
+    let character of characterList;
+    let i = index;
+    let isFirst = first;
+    let isLast = last;
+    let isEven = even;
+    let isOdd = odd;">
+  ...
+</li>
+```
