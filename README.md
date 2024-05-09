@@ -828,3 +828,10 @@ $> http-server -o
 
 Así pues, esto nos despliega un servidor local de pruebas bastante útil.
 
+## GitHub Pages
+
+Se puede desplegar desde `Settings -> Pages`:
+
+1. Copiar el directorio `dist/bases` en la raíz del proyecto
+2. Renombrarlo como `docs`
+3. Subir los cambios
