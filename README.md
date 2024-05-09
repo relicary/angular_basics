@@ -683,3 +683,66 @@ export class MainPageComponent {
   }
 }
 ```
+
+# Despliegues
+
+## UUID
+
+Es un paquete muy popular para la asignación de ID's a elementos.
+
+```
+$> > npm i uuid
+```
+
+Añadimos una dependencia de desarrollos
+
+$> npm i --save-dev @types/uuid
+
+Y que se declara en los ficheros en que se vaya a usar 
+
+```typescript
+import { v4 } from "uuid";
+```
+
+Donde v4 es una función que genera ID's.
+
+En primer lugar, hay que indicarle a la interfaz character que tiene un nuevo campo:
+
+```typescript
+export interface Character {
+  id?: string;
+  name: string;
+  power: number;
+}
+```
+
+Tras esto, hay que completar el servicio que es donde (por ahroa) se están declarando los datos
+
+```typescript
+export class DbzService {
+  public characters: Character[] = [
+    {
+      id: uuid(),
+      name: 'Krillin',
+      power: 1000,
+    },
+    {
+      id: uuid(),
+      name: 'Goku',
+      power: 9500,
+    },
+    {
+      id: uuid(),
+      name: 'Vegeta',
+      power: 7500,
+    },
+  ];
+```
+Tras estos pasos, se modificarán todos los métodos que deseemos que usen el ID
+
+
+```typescript
+```
+```typescript
+```
+
