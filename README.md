@@ -775,7 +775,7 @@ export class DbzService {
   ];
 ```
 
-## Despliegues en Producción
+# Despliegues en Producción
 
 El objetivo es "sacudir" la aplicación para que ocupe lo menos posible y podamos usarlo en un servidor de Producción. Básicamente lo reducimos a un conjunto de ficheros:
 
@@ -809,21 +809,22 @@ Cada fichero, es renombrado con un código HASH. Este hash solamente se modifica
 
 Todo esto se almacena en un nuevo directorio llamado `dist`
 
-### HttpServer Local y Netlify
+## HttpServer
 
-Sobre el HttpServer:
-
-Es un paquete npm que podemos instalar
+El `HttpServer` es un paquete npm que se puede instalar
 
 ```bash
 $> npm install --global http-server
 ```
 
-Una vez instalado, nos movemos al directorio ```dist``` y dentro del mismo al direcorio del proyecto. Ahí podemos lanzar
+Una vez instalado, nos movemos al directorio `dist` y dentro del mismo al direcorio del proyecto. Ahí podemos lanzar
 
 ```bash
-$> http-server 
+# Opcional
+$> cd dist/bases/browser
+# Ejecutar
+$> http-server -o
 ```
 
-
+Así pues, esto nos despliega un servidor local de pruebas bastante útil.
 
