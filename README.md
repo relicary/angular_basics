@@ -775,7 +775,55 @@ export class DbzService {
   ];
 ```
 
+## Despliegues en Producción
 
+El objetivo es "sacudir" la aplicación para que ocupe lo menos posible y podamos usarlo en un servidor de Producción. Básicamente lo reducimos a un conjunto de ficheros:
+
+* `HTML`
+* `CSS`
+* `JS`
+
+Hay que tener en cuenta el concepto de **Assets**. Son los elementos que nunca van a cambiar, como las imágenes o los `CSS`. Son los recursos estáticos que no cambian de nombre.
+
+Cuando se lanza un `ng serve` se puede observar ver una tabla en consola que muestra el tamaño total. Y es demasiado grande para una web. Démonos cuenta de que estamos hablando de sólo texto.
+
+En el directorio donde reside `package.json`, si se ejecuta este `build`, la aplicación se optimiza tremendamente.
+
+```bash
+$> ng build
+\ Building...
+Initial chunk files   | Names         |  Raw size | Estimated transfer size
+main-EQLKLX5B.js      | main          | 238.57 kB |                62.12 kB
+polyfills-RT5I6R6G.js | polyfills     |  33.10 kB |                10.72 kB
+styles-5INURTSO.css   | styles        |   0 bytes |                 0 bytes
+
+                      | Initial total | 271.68 kB |                72.84 kB
+Output location: C:\wsRelicary\angular_herrera\bases\dist\bases
+
+Application bundle generation complete. [15.835 seconds]
+```
+
+Y esos `72.84 kB` serán los que se suban al servidor de producción.
+
+Cada fichero, es renombrado con un código HASH. Este hash solamente se modifica al hacer `build` sobre ficheros modificados. De este modo la caché se optimiza.
+
+Todo esto se almacena en un nuevo directorio llamado `dist`
+
+### HttpServer Local y Netlify
+
+Sobre el HttpServer:
+
+Es un paquete npm que podemos instalar
+
+```bash
+$> npm install --global http-server
+```
+
+Una vez instalado, nos movemos al directorio ```dist``` y dentro del mismo al direcorio del proyecto. Ahí podemos lanzar
+
+```bash
+$> http-server 
+```
 
 
 
