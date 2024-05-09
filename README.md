@@ -470,3 +470,21 @@ En otras palabras, el componente Main Page ha transmitido un valor al componente
   ...
 </li>
 ```
+
+## ngClass
+
+Permite definir un estilo en el atributo `class` dependiendo de una condición.
+
+```html
+<li *ngFor="
+      let character of characterList;
+      let isLast = last;
+      let isEven = even;
+    "
+    class="list-group-item"
+    [ngClass]="{
+      'list-group-item-dark': isLast,
+      'list-group-item-primary': isEven
+    }"
+>
+```
