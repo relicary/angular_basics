@@ -419,7 +419,7 @@ Entonces, para cada una de esas partes, se genera un componente:
 * list
 * add-character
 
-## Decoradores: Comunicación entre componentes
+# Decoradores: Comunicación entre componentes
 
 Cualquier componente de una `page` puede necesitar comunicarse con otro. Para lograrlo hay que hacer uso del decorador `@Input`
 
@@ -487,4 +487,53 @@ Permite definir un estilo en el atributo `class` dependiendo de una condición.
       'list-group-item-primary': isEven
     }"
 >
+```
+
+# Formularios
+
+Los formularios dentro de un `HTML` también se pueden linkar a las properties de un componente.
+
+Para ello, es necesario que la declaración del módulo en el que trabajamos importe `FormsModule`
+
+```typescript
+import { FormsModule } from '@angular/forms';
+
+
+@NgModule({
+  declarations: [
+    ...
+  ],
+  exports: [
+    ...
+  ],
+  imports: [
+    ...
+    FormsModule
+  ]
+})
+...
+```
+
+Mediante la propiedad `[(ngModel)]` puede establecerse una *two way data binding* entre el formulario y el componente al que pertenece.
+
+```typescript
+...
+@Component({
+  ...
+})
+export class AddCharacterComponent {
+
+  public character: Character = {
+    name: '',
+    power: 0,
+  }
+}
+```
+
+```html
+<input type="text"
+    [(ngModel)]="character.name"
+    name="name"
+    class="form-control mb-2"
+    placeholder="Name" />
 ```
