@@ -330,7 +330,7 @@ Un **módulo** es el agrupador de una funcionalidad.
 
 > **NOTA:** Los módulos están en desuso a partir de Angular 17.
 
-¿Cómo pueden crearse?
+**¿Cómo pueden crearse manualmentes?**
 
 Dentro del directorio `app`, se crea otro llamado `counter` y anidado al mismo, el directorio `components` donde se almacenarán todos los componentes.
 
@@ -361,7 +361,7 @@ export class CounterModule {
 }
 ```
 
-De este modo, el nuevo módulo puede declararse en el ```app.module.ts``` dentro del tag ```import```
+De este modo, el nuevo módulo puede declararse en el `app.module.ts` dentro del tag `import`
 
 
 ```typescript
@@ -372,3 +372,255 @@ De este modo, el nuevo módulo puede declararse en el ```app.module.ts``` dentro
 })
 export class AppModule { }
 ```
+
+**¿Y cómo se crea un módulo de forma automática?** Desde el directorio que contiene `src`
+
+```bash
+$> ng generate module dbz
+CREATE src/app/dbz/dbz.module.ts (201 bytes)
+```
+O
+```bash
+$> ng g m dbz
+CREATE src/app/dbz/dbz.module.ts (201 bytes)
+```
+
+## Módulo DBZ
+
+Se compone de un fichero `dbz-module.ts` y cuatro directorios:
+
+* `pages`
+* `components`
+* `interfaces`
+* `services`
+
+Lo primero, crear un componente en el que pueda agrupar todos los demás componentes. Eso es una **page**: un componente común y corriente que contiene a otros.
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-dbz-main-page',
+  templateUrl: './main-page.component.html'
+})
+
+export class MainPageComponent {
+
+}
+```
+
+¿De qué se va a componer la pantalla? Lo mejor es pensar en reducir todo a módulos pequeños. Por ejemplo:
+
+* Un listado de personajes
+* Un formulario para añadir personajes
+
+Entonces, para cada una de esas partes, se genera un componente:
+
+* list
+* add-character
+
+# Decoradores: Comunicación entre componentes
+
+Cualquier componente de una `page` puede necesitar comunicarse con otro. Para lograrlo hay que hacer uso del decorador `@Input`
+
+```typescript
+@Component({
+  selector: 'dbz-list',
+  templateUrl: './list.component.html'
+})
+export class ListComponent {
+  @Input()
+  public characterList: Character[] = [{
+    name: 'Trunks',
+    power: 10
+  }];
+}
+```
+
+¿Qué aporta este decorador?
+
+1. El selector `dbz-list` puede recibir una property llamada `[characterList]`.
+2. Y se le puede asignar un valor que se localiza en el componente que lo llama.
+
+
+```html
+  <dbz-list [characterList]="characters"></dbz-list>
+```
+
+Donde `characters` es un campo declarado dentro del componente `app-dbz-main-page` y se asigna al componente `dbz-list`.
+
+En otras palabras, el componente Main Page ha transmitido un valor al componente `list`
+
+## Más sobre ngFor
+
+`ngFor` nos da un conjunto de variables con las que podemos controlar nuestro bucle:
+* En qué **índice** se está: `index`
+* Cuál es el primer elemento: `first`
+* Cuál es el último: `last`
+* Si el índice es par (`even`) o impar (`odd`)
+
+```html
+<li *ngFor="
+    let character of characterList;
+    let i = index;
+    let isFirst = first;
+    let isLast = last;
+    let isEven = even;
+    let isOdd = odd;">
+  ...
+</li>
+```
+
+## ngClass
+
+Permite definir un estilo en el atributo `class` dependiendo de una condición.
+
+```html
+<li *ngFor="
+      let character of characterList;
+      let isLast = last;
+      let isEven = even;
+    "
+    class="list-group-item"
+    [ngClass]="{
+      'list-group-item-dark': isLast,
+      'list-group-item-primary': isEven
+    }"
+>
+```
+
+# Formularios
+
+Los formularios dentro de un `HTML` también se pueden linkar a las properties de un componente.
+
+Para ello, es necesario que la declaración del módulo en el que trabajamos importe `FormsModule`
+
+```typescript
+import { FormsModule } from '@angular/forms';
+
+
+@NgModule({
+  declarations: [
+    ...
+  ],
+  exports: [
+    ...
+  ],
+  imports: [
+    ...
+    FormsModule
+  ]
+})
+...
+```
+
+Mediante la propiedad `[(ngModel)]` puede establecerse una *two way data binding* entre el formulario y el componente al que pertenece.
+
+```typescript
+...
+@Component({
+  ...
+})
+export class AddCharacterComponent {
+
+  public character: Character = {
+    name: '',
+    power: 0,
+  }
+}
+```
+
+```html
+<input type="text"
+    [(ngModel)]="character.name"
+    name="name"
+    class="form-control mb-2"
+    placeholder="Name" />
+```
+
+También pueden linkarse métodos del componente a elementos HTML a través de sus eventos.
+
+```typescript
+...
+@Component({
+  ...
+})
+export class AddCharacterComponent {
+
+  ...
+
+  printCharacter() : void{
+    console.log(this.character);
+  }
+}
+```
+
+```html
+<button type="submit"
+  class="btn btn-primary"
+  (click)="printCharacter()">
+  Add
+</button>
+```
+
+### Emisores: Submit de un formulario
+
+`ngSubmit` es el evento en el tag `form` que permite ejecutar el contenido de un formulario.
+
+El proceso para mandar su contenido a otro elemento pasa por el uso de **emisores**
+
+1. Crear en el componente una property de tipo `EventEmitter`
+```typescript
+export class AddCharacterComponent {
+  public onNewCharacter: EventEmitter<Character> = new EventEmitter();
+}
+```
+
+2. Se le añade el decorador `@Output()` que permite que ese emitter se lea desde otras partes de la aplicación.
+```typescript
+export class AddCharacterComponent {
+  @Output()
+  public onNewCharacter: EventEmitter<Character> = new EventEmitter();
+}
+```
+
+3. En una función del componente, se especifica cuando se manda (emite) este campo y con qué contenido.
+```typescript
+export class AddCharacterComponent {
+  @Output()
+  public onNewCharacter: EventEmitter<Character> = new EventEmitter();
+
+  emitCharacter() : void {
+    this.onNewCharacter.emit(this.character);
+  }
+}
+```
+
+4. Ese evento se invoca desde el `form` haciendo uso del evento `ngSubmit` 
+```html
+<form class="row" (ngSubmit)="emitCharacter()">
+```
+
+5. El componente que va a recibir la información necesita un método que acepte el tipo de elemento emitido.
+```typescript
+export class MainPageComponent {
+  onNewCharacter(character: Character): void  {
+  }
+}
+```
+
+6. En el HTML que se espera recibir añade la recepción del evento mandado por el hijo y lo gestiona la función del componente.
+```html
+<dbz-add-character (onNewCharacter)="onNewCharacter($event)"></dbz-add-character>
+```
+
+7. ¿Y cómo mandarlo desde `MainPageComponent` a `ListComponent`? En el propio componente se implementa el alamacenado (una lista en este caso)
+```typescript
+export class MainPageComponent {
+  onNewCharacter(character: Character): void  {
+    this.characters.push(character);
+  }
+}
+```
+
+> **Nota:** en los HTML, los `()` paréntesis definen un evento/método y los `[]` corchetes campos del componente.
