@@ -835,3 +835,5 @@ Se puede desplegar desde `Settings -> Pages`:
 1. Copiar el directorio `dist/bases` en la raíz del proyecto
 2. Renombrarlo como `docs`
 3. Subir los cambios
+4. Configurar la action para que se lance usando el directorio `docs`
+5. Cuando finalice la *action*, se dispondrá de una URL
