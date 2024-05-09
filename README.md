@@ -537,3 +537,82 @@ export class AddCharacterComponent {
     class="form-control mb-2"
     placeholder="Name" />
 ```
+
+También pueden linkarse métodos del componente a elementos HTML a través de sus eventos.
+
+```typescript
+...
+@Component({
+  ...
+})
+export class AddCharacterComponent {
+
+  ...
+
+  printCharacter() : void{
+    console.log(this.character);
+  }
+}
+```
+
+```html
+<button type="submit"
+  class="btn btn-primary"
+  (click)="printCharacter()">
+  Add
+</button>
+```
+
+### Emisores: Submit de un formulario
+
+`ngSubmit` es el evento en el tag `form` que permite ejecutar el contenido de un formulario.
+
+El proceso para mandar su contenido a otro elemento pasa por el uso de **emisores**
+
+1. Crear en el componente una property de tipo `EventEmitter`
+```typescript
+export class AddCharacterComponent {
+  public onNewCharacter: EventEmitter<Character> = new EventEmitter();
+}
+```
+
+2. Se le añade el decorador `@Output()` que permite que ese emitter se lea desde otras partes de la aplicación.
+```typescript
+export class AddCharacterComponent {
+  @Output()
+  public onNewCharacter: EventEmitter<Character> = new EventEmitter();
+}
+```
+
+3. En una función del componente, se especifica cuando se manda (emite) este campo y con qué contenido.
+```typescript
+export class AddCharacterComponent {
+  @Output()
+  public onNewCharacter: EventEmitter<Character> = new EventEmitter();
+
+  emitCharacter() : void {
+    this.onNewCharacter.emit(this.character);
+  }
+}
+```
+
+4. Ese evento se invoca desde el `form` haciendo uso del evento `ngSubmit` 
+```html
+<form class="row" (ngSubmit)="emitCharacter()">
+```
+
+5. El componente que va a recibir la información necesita un método que acepte el tipo de elemento emitido.
+```typescript
+export class MainPageComponent {
+  onNewCharacter(character: Character): void  {
+  }
+}
+```
+
+6. En el HTML que se espera recibir añade la recepción del evento mandado por el hijo y lo gestiona la función del componente.
+```html
+<dbz-add-character (onNewCharacter)="onNewCharacter($event)"></dbz-add-character>
+```
+
+
+> **Nota:** en los HTML, los `()` paréntesis definen un evento/método y los `[]` corchetes campos del componente.
